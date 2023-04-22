@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "YouTube Music Downloader",
+    "version": "1.0.0",
+
+    "background": {
+        "service_worker": "script.js",
+        "type": "module"
+    },
+    "action": {
+        "default_icon": {},
+        "default_title": "Download Music"
+    },
+    "options_page": "options.html",
+
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "storage"
+    ],
+    "host_permissions": [
+        "https://youtube.com/"
+    ]
+}
