@@ -82,7 +82,7 @@ func Main() {
 		escapedFilename := strings.ReplaceAll(body.Filename, "(", "[")
 		escapedFilename = strings.ReplaceAll(escapedFilename, ")", "]")
 		escapedFilename = strings.ReplaceAll(escapedFilename, "/", "_")
-		renamedPath := path.Join(body.SaveDir, escapedFilename+".mp3")
+		renamedPath := path.Join(body.SaveDir, filename+"-"+escapedFilename+".mp3")
 		cmd = exec.Command("mv", downloadPath+".mp3", renamedPath)
 		fmt.Println(cmd.String())
 		err = cmd.Run()
