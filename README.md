@@ -1,8 +1,8 @@
 ## 依存関係
 
-- go
-- ffmpeg
-- yt-dlp
+- [go](https://go.dev/doc/install)
+- [ffmpeg](https://ffmpeg.org/download.html)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp#installation)
 
 ## セットアップ
 
