@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os/exec"
 	"path"
 	"strings"
 	"time"
@@ -34,18 +33,14 @@ func Main() {
 
 		downloadPath := path.Join(body.SaveDir, filename)
 
-		cmd := exec.Command("yt-dlp", "-x", "-o", downloadPath, body.Url)
-		fmt.Println(cmd.String())
-		err = cmd.Run()
+		err = prettyRun("yt-dlp", "-x", "-o", downloadPath, body.Url)
 		if err != nil {
 			fmt.Println(err)
 			responseBadRequest(w)
 			return
 		}
 
-		cmd = exec.Command("find", body.SaveDir, "-type", "f", "-name", filename+"*", "-not", "-name", "*.mp3")
-		fmt.Println(cmd.String())
-		downloadedFilenamesBytes, err := cmd.Output()
+		downloadedFilenamesBytes, err := prettyRunOutput("find", body.SaveDir, "-type", "f", "-name", filename+"*", "-not", "-name", "*.mp3")
 		if err != nil {
 			fmt.Println(err)
 			responseBadRequest(w)
@@ -61,18 +56,14 @@ func Main() {
 
 		downloadedFilename := downloadedFilenames[0]
 
-		cmd = exec.Command("ffmpeg", "-y", "-i", downloadedFilename, downloadPath+".mp3")
-		fmt.Println(cmd.String())
-		err = cmd.Run()
+		err = prettyRun("ffmpeg", "-y", "-i", downloadedFilename, downloadPath+".mp3")
 		if err != nil {
 			fmt.Println(err)
 			responseBadRequest(w)
 			return
 		}
 
-		cmd = exec.Command("rm", downloadedFilename)
-		fmt.Println(cmd.String())
-		err = cmd.Run()
+		err = prettyRun("rm", downloadedFilename)
 		if err != nil {
 			fmt.Println(err)
 			responseBadRequest(w)
@@ -83,9 +74,8 @@ func Main() {
 		escapedFilename = strings.ReplaceAll(escapedFilename, ")", "]")
 		escapedFilename = strings.ReplaceAll(escapedFilename, "/", "_")
 		renamedPath := path.Join(body.SaveDir, filename+"-"+escapedFilename+".mp3")
-		cmd = exec.Command("mv", downloadPath+".mp3", renamedPath)
-		fmt.Println(cmd.String())
-		err = cmd.Run()
+
+		err = prettyRun("mv", downloadPath+".mp3", renamedPath)
 		if err != nil {
 			fmt.Println(err)
 			responseBadRequest(w)
